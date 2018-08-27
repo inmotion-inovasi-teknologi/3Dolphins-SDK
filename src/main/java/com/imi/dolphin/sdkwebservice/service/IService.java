@@ -18,6 +18,4 @@ public interface IService {
 	ExtensionResult getForms(ExtensionRequest extensionRequest);
 	
 	ExtensionResult getButtons(ExtensionRequest extensionRequest);
-	
-	ExtensionResult getCarousel(ExtensionRequest extensionRequest);
 }

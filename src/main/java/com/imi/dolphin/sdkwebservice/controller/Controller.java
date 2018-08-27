@@ -67,10 +67,4 @@ public class Controller {
 		return svcService.getButtons(extensionRequest);
 	}
 
-	@RequestMapping("/carousel")
-	@PostMapping
-	public ExtensionResult doBuildCarousel(@RequestBody ExtensionRequest extensionRequest) {
-		return svcService.getCarousel(extensionRequest);
-	}
-
 }

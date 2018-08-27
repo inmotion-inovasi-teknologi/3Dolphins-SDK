@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.imi.dolphin.sdkwebservice.builder.ButtonBuilder;
-import com.imi.dolphin.sdkwebservice.builder.CarouselBuilder;
 import com.imi.dolphin.sdkwebservice.builder.FormBuilder;
 import com.imi.dolphin.sdkwebservice.builder.QuickReplyBuilder;
 import com.imi.dolphin.sdkwebservice.model.ButtonTemplate;
@@ -271,57 +270,6 @@ public class ServiceImp implements IService {
 
 		ButtonBuilder buttonBuilder = new ButtonBuilder(button);
 		output.put(OUTPUT, buttonBuilder.build());
-
-		ExtensionResult extensionResult = new ExtensionResult();
-		extensionResult.setAgent(false);
-		extensionResult.setRepeat(false);
-		extensionResult.setSuccess(true);
-		extensionResult.setNext(true);
-		extensionResult.setValue(output);
-		return extensionResult;
-	}
-
-	/*
-	 * Generate Carousel
-	 * 
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.imi.dolphin.sdkwebservice.service.IService#getCarousel(com.imi.dolphin.
-	 * sdkwebservice.model.ExtensionRequest)
-	 */
-	@Override
-	public ExtensionResult getCarousel(ExtensionRequest extensionRequest) {
-		Map<String, String> output = new HashMap<>();
-
-		ButtonTemplate button = new ButtonTemplate();
-		button.setTitle("This is title");
-		button.setSubTitle("This is subtitle");
-		button.setPictureLink(SAMPLE_IMAGE_PATH);
-		button.setPicturePath(SAMPLE_IMAGE_PATH);
-		List<EasyMap> actions = new ArrayList<>();
-		EasyMap bookAction = new EasyMap();
-		bookAction.setName("Label");
-		bookAction.setValue("Payload");
-		actions.add(bookAction);
-		button.setButtonValues(actions);
-		ButtonBuilder buttonBuilder = new ButtonBuilder(button);
-		
-		ButtonTemplate button2 = new ButtonTemplate();
-		button2.setTitle("This is title 2");
-		button2.setSubTitle("This is subtitle 2");
-		button2.setPictureLink(SAMPLE_IMAGE_PATH);
-		button2.setPicturePath(SAMPLE_IMAGE_PATH);
-		List<EasyMap> actions2 = new ArrayList<>();
-		EasyMap bookAction2 = new EasyMap();
-		bookAction2.setName("Label 2");
-		bookAction2.setValue("Payload 2");
-		actions2.add(bookAction2);
-		button2.setButtonValues(actions2);
-		ButtonBuilder buttonBuilder2 = new ButtonBuilder(button2);
-		
-		CarouselBuilder carouselBuilder = new CarouselBuilder(buttonBuilder.build(), buttonBuilder2.build());
-		output.put(OUTPUT, carouselBuilder.build());
 
 		ExtensionResult extensionResult = new ExtensionResult();
 		extensionResult.setAgent(false);
