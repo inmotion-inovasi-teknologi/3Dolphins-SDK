@@ -10,6 +10,10 @@ package com.imi.dolphin.sdkwebservice.builder;
 public class QuickReplyBuilder {
 	private StringBuilder quickReply;
 
+	public QuickReplyBuilder() {
+		
+	}
+	
 	/**
 	 * 
 	 * @param builder

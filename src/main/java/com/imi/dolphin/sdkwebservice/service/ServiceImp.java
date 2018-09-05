@@ -17,6 +17,7 @@ import com.imi.dolphin.sdkwebservice.model.ButtonTemplate;
 import com.imi.dolphin.sdkwebservice.model.EasyMap;
 import com.imi.dolphin.sdkwebservice.model.ExtensionRequest;
 import com.imi.dolphin.sdkwebservice.model.ExtensionResult;
+import com.imi.dolphin.sdkwebservice.param.ParamSdk;
 import com.imi.dolphin.sdkwebservice.property.AppProperties;
 import com.imi.dolphin.sdkwebservice.util.OkHttpUtil;
 
@@ -270,6 +271,28 @@ public class ServiceImp implements IService {
 
 		ButtonBuilder buttonBuilder = new ButtonBuilder(button);
 		output.put(OUTPUT, buttonBuilder.build());
+
+		ExtensionResult extensionResult = new ExtensionResult();
+		extensionResult.setAgent(false);
+		extensionResult.setRepeat(false);
+		extensionResult.setSuccess(true);
+		extensionResult.setNext(true);
+		extensionResult.setValue(output);
+		return extensionResult;
+	}
+
+	/*
+	 * 
+	 * 
+	 * (non-Javadoc)
+	 * @see com.imi.dolphin.sdkwebservice.service.IService#getSplitConversation(com.imi.dolphin.sdkwebservice.model.ExtensionRequest)
+	 */
+	@Override
+	public ExtensionResult getSplitConversation(ExtensionRequest extensionRequest) {
+		String firstLine= "Terima kasih {customer_name}";
+		String secondLine = "Data telah kami terima dan agent kami akan proses terlebih dahulu ya kak";
+		Map<String, String> output = new HashMap<>();
+		output.put(OUTPUT, firstLine + ParamSdk.SPLIT_CHAT+ secondLine);
 
 		ExtensionResult extensionResult = new ExtensionResult();
 		extensionResult.setAgent(false);
