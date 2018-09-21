@@ -13,10 +13,6 @@
 
 package com.imi.dolphin.sdkwebservice.builder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.imi.dolphin.sdkwebservice.model.ButtonTemplate;
-
 /**
  * 
  * @author reja
@@ -25,8 +21,6 @@ import com.imi.dolphin.sdkwebservice.model.ButtonTemplate;
 public class CarouselBuilder {
 	private String buttonBuilders;
 	private StringBuilder stringBuilder;
-	private static final String BUTTON_SYNTAX = "{button:";
-	private static final String BUTTON_SYNTAX_SUFFIX = "}";
 	private static final String CONSTANT_SPLIT_SYNTAX = "&split&";
 	
 	/**
@@ -37,12 +31,8 @@ public class CarouselBuilder {
 		for(String buttonBuilder: buttonBuilders) {
 			if(stringBuilder==null) {
 				stringBuilder = new StringBuilder();
-				stringBuilder.append(BUTTON_SYNTAX).append(buttonBuilder).append(BUTTON_SYNTAX_SUFFIX).append(CONSTANT_SPLIT_SYNTAX);
-			}else {
-				stringBuilder.append(BUTTON_SYNTAX).append(buttonBuilder).append(BUTTON_SYNTAX_SUFFIX).append(CONSTANT_SPLIT_SYNTAX);
 			}
-//			buttonBuilder = stringBuilder.toString();
-			System.out.println(stringBuilder.toString());
+			stringBuilder.append(buttonBuilder).append(CONSTANT_SPLIT_SYNTAX);
 		}
 		this.buttonBuilders = stringBuilder.toString();
 	}
@@ -70,7 +60,5 @@ public class CarouselBuilder {
 	public void setStringBuilder(StringBuilder stringBuilder) {
 		this.stringBuilder = stringBuilder;
 	}
-
-	
 
 }
