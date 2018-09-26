@@ -9,6 +9,8 @@ public interface IService {
 	
 	ExtensionResult getCustomerInfo(ExtensionRequest extensionRequest);
 	
+	ExtensionResult modifyCustomerName(ExtensionRequest extensionRequest);
+	
 	ExtensionResult getProductInfo(ExtensionRequest extensionRequest);
 	
 	ExtensionResult getMessageBody(ExtensionRequest extensionRequest);
@@ -20,6 +22,8 @@ public interface IService {
 	ExtensionResult getButtons(ExtensionRequest extensionRequest);
 	
 	ExtensionResult getCarousel(ExtensionRequest extensionRequest);
+	
+	ExtensionResult getImage(ExtensionRequest extensionRequest);
 	
 	ExtensionResult getSplitConversation(ExtensionRequest extensionRequest);
 }

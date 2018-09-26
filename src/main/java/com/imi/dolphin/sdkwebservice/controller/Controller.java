@@ -37,6 +37,12 @@ public class Controller {
 		return svcService.getCustomerInfo(extensionRequest);
 	}
 
+	@RequestMapping("/modifycustomername")
+	@PostMapping
+	public ExtensionResult doClearCustomerName(@RequestBody ExtensionRequest extensionRequest) {
+		return svcService.modifyCustomerName(extensionRequest);
+	}
+	
 	@RequestMapping("/productinfo")
 	@PostMapping
 	public ExtensionResult doQueryProductInfo(@RequestBody ExtensionRequest extensionRequest) {
@@ -71,5 +77,11 @@ public class Controller {
 	@PostMapping
 	public ExtensionResult doBuildCarousel(@RequestBody ExtensionRequest extensionRequest) {
 		return svcService.getCarousel(extensionRequest);
+	}
+	
+	@RequestMapping("/image")
+	@PostMapping
+	public ExtensionResult doBuildImage(@RequestBody ExtensionRequest extensionRequest) {
+		return svcService.getImage(extensionRequest);
 	}
 }

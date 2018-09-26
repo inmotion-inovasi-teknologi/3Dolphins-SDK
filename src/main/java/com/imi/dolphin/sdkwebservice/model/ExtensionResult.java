@@ -32,7 +32,8 @@ public class ExtensionResult implements Serializable {
 	private boolean success;
 	private boolean repeat;
 	private boolean agent;
-
+	private Map<String, String> entities;
+	
 	private Map<String, EasyMap> parameters;
 
 
@@ -110,6 +111,20 @@ public class ExtensionResult implements Serializable {
 		this.agent = agent;
 	}
 
+	/**
+	 * @return the entities
+	 */
+	public Map<String, String> getEntities() {
+		return entities;
+	}
+
+	/**
+	 * @param entities the entities to set
+	 */
+	public void setEntities(Map<String, String> entities) {
+		this.entities = entities;
+	}
+	
 	/**
 	 * @return Get the parameters
 	 */
