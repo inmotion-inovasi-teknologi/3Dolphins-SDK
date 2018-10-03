@@ -23,6 +23,10 @@ public interface IService {
 	
 	ExtensionResult getCarousel(ExtensionRequest extensionRequest);
 	
+	ExtensionResult doTransferToAgent(ExtensionRequest extensionRequest);
+
+	ExtensionResult doSendLocation(ExtensionRequest extensionRequest);
+
 	ExtensionResult getImage(ExtensionRequest extensionRequest);
 	
 	ExtensionResult getSplitConversation(ExtensionRequest extensionRequest);

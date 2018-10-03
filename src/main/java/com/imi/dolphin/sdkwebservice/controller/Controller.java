@@ -79,6 +79,18 @@ public class Controller {
 		return svcService.getCarousel(extensionRequest);
 	}
 	
+	@RequestMapping("/transferAgent")
+	@PostMapping
+	public ExtensionResult doTransferToAgent(@RequestBody ExtensionRequest extensionRequest) {
+		return svcService.doTransferToAgent(extensionRequest);
+	}
+	
+	@RequestMapping("/sendLocation")
+	@PostMapping
+	public ExtensionResult doSendLocation(@RequestBody ExtensionRequest extensionRequest) {
+		return svcService.getImage(extensionRequest);
+	}
+	
 	@RequestMapping("/image")
 	@PostMapping
 	public ExtensionResult doBuildImage(@RequestBody ExtensionRequest extensionRequest) {

@@ -113,12 +113,15 @@ public class ServiceImp implements IService {
 		extensionResult.setValue(output);
 		return extensionResult;
 	}
-	
+
 	/*
 	 * Modify Customer Name Entity
 	 * 
 	 * (non-Javadoc)
-	 * @see com.imi.dolphin.sdkwebservice.service.IService#clearCustomerName(com.imi.dolphin.sdkwebservice.model.ExtensionRequest)
+	 * 
+	 * @see
+	 * com.imi.dolphin.sdkwebservice.service.IService#clearCustomerName(com.imi.
+	 * dolphin.sdkwebservice.model.ExtensionRequest)
 	 */
 	@Override
 	public ExtensionResult modifyCustomerName(ExtensionRequest extensionRequest) {
@@ -127,11 +130,11 @@ public class ServiceImp implements IService {
 		extensionResult.setRepeat(false);
 		extensionResult.setSuccess(true);
 		extensionResult.setNext(true);
-		
+
 		Map<String, String> clearEntities = new HashMap<>();
 		String name = getEasyMapValueByName(extensionRequest, "name");
-		if(name.equalsIgnoreCase("reja")) {
-			clearEntities.put("name", "budi");	
+		if (name.equalsIgnoreCase("reja")) {
+			clearEntities.put("name", "budi");
 			extensionResult.setEntities(clearEntities);
 		}
 		return extensionResult;
@@ -195,7 +198,7 @@ public class ServiceImp implements IService {
 			String message = jsonObject.getString("body");
 			respBuilder.append(message);
 		} catch (Exception e) {
-			
+
 		}
 
 		ExtensionResult extensionResult = new ExtensionResult();
@@ -322,8 +325,6 @@ public class ServiceImp implements IService {
 		ButtonTemplate button = new ButtonTemplate();
 		button.setTitle("This is title");
 		button.setSubTitle("This is subtitle");
-		button.setPictureLink(SAMPLE_IMAGE_PATH);
-		button.setPicturePath(SAMPLE_IMAGE_PATH);
 		List<EasyMap> actions = new ArrayList<>();
 		EasyMap bookAction = new EasyMap();
 		bookAction.setName("Label");
@@ -335,8 +336,6 @@ public class ServiceImp implements IService {
 		ButtonTemplate button2 = new ButtonTemplate();
 		button2.setTitle("This is title 2");
 		button2.setSubTitle("This is subtitle 2");
-		button2.setPictureLink(SAMPLE_IMAGE_PATH);
-		button2.setPicturePath(SAMPLE_IMAGE_PATH);
 		List<EasyMap> actions2 = new ArrayList<>();
 		EasyMap bookAction2 = new EasyMap();
 		bookAction2.setName("Label 2");
@@ -348,29 +347,24 @@ public class ServiceImp implements IService {
 		ButtonTemplate button3 = new ButtonTemplate();
 		button3.setTitle("This is title 3");
 		button3.setSubTitle("This is subtitle 3");
-		button3.setPictureLink(SAMPLE_IMAGE_PATH);
-		button3.setPicturePath(SAMPLE_IMAGE_PATH);
 		button3.setButtonValues(actions2);
 		ButtonBuilder buttonBuilder3 = new ButtonBuilder(button3);
-		
+
 		ButtonTemplate button4 = new ButtonTemplate();
 		button4.setTitle("This is title 4");
 		button4.setSubTitle("This is subtitle 4");
-		button4.setPictureLink(SAMPLE_IMAGE_PATH);
-		button4.setPicturePath(SAMPLE_IMAGE_PATH);
 		button4.setButtonValues(actions2);
 		ButtonBuilder buttonBuilder4 = new ButtonBuilder(button4);
-		
+
 		ButtonTemplate button5 = new ButtonTemplate();
 		button5.setTitle("This is title 5");
 		button5.setSubTitle("This is subtitle 5");
-		button5.setPictureLink(SAMPLE_IMAGE_PATH);
-		button5.setPicturePath(SAMPLE_IMAGE_PATH);
 		button5.setButtonValues(actions2);
 		ButtonBuilder buttonBuilder5 = new ButtonBuilder(button5);
-		
-		CarouselBuilder carouselBuilder = new CarouselBuilder(buttonBuilder.build(), buttonBuilder2.build(),buttonBuilder3.build(), buttonBuilder4.build(), buttonBuilder5.build());
-		
+
+		CarouselBuilder carouselBuilder = new CarouselBuilder(buttonBuilder.build(), buttonBuilder2.build(),
+				buttonBuilder3.build(), buttonBuilder4.build(), buttonBuilder5.build());
+
 		output.put(OUTPUT, carouselBuilder.build());
 
 		ExtensionResult extensionResult = new ExtensionResult();
@@ -382,12 +376,53 @@ public class ServiceImp implements IService {
 		return extensionResult;
 	}
 
-	
+	/*
+	 * Transfer ticket to agent
+	 * 
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.imi.dolphin.sdkwebservice.service.IService#doTransferToAgent(com.imi.
+	 * dolphin.sdkwebservice.model.ExtensionRequest)
+	 */
+	@Override
+	public ExtensionResult doTransferToAgent(ExtensionRequest extensionRequest) {
+		ExtensionResult extensionResult = new ExtensionResult();
+		extensionResult.setAgent(true);
+		extensionResult.setRepeat(false);
+		extensionResult.setSuccess(true);
+		extensionResult.setNext(false);
+		return extensionResult;
+	}
+
+	/*
+	 * Send Location
+	 * 
+	 * (non-Javadoc)
+	 * @see com.imi.dolphin.sdkwebservice.service.IService#doSendLocation(com.imi.dolphin.sdkwebservice.model.ExtensionRequest)
+	 */
+	@Override
+	public ExtensionResult doSendLocation(ExtensionRequest extensionRequest) {
+		Map<String, String> output = new HashMap<>();
+		QuickReplyBuilder quickReplyBuilder = new QuickReplyBuilder.Builder("Kirim lokasi kakak ya").add("location", "location")
+				.build();
+		output.put(OUTPUT, quickReplyBuilder.string());
+		ExtensionResult extensionResult = new ExtensionResult();
+		extensionResult.setAgent(false);
+		extensionResult.setRepeat(false);
+		extensionResult.setSuccess(true);
+		extensionResult.setNext(true);
+		extensionResult.setValue(output);
+		return extensionResult;
+	}
+
 	/*
 	 * Generate Image
 	 * 
 	 * (non-Javadoc)
-	 * @see com.imi.dolphin.sdkwebservice.service.IService#getImage(com.imi.dolphin.sdkwebservice.model.ExtensionRequest)
+	 * 
+	 * @see com.imi.dolphin.sdkwebservice.service.IService#getImage(com.imi.dolphin.
+	 * sdkwebservice.model.ExtensionRequest)
 	 */
 	@Override
 	public ExtensionResult getImage(ExtensionRequest extensionRequest) {
