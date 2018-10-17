@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2014 InMotion Innovation Technology. All Rights Reserved. <BR>
+ * <BR>
+ * This software contains confidential and proprietary information of
+ * InMotion Innovation Technology. ("Confidential Information").<BR>
+ * <BR>
+ * Such Confidential Information shall not be disclosed and it shall
+ * only be used in accordance with the terms of the license agreement
+ * entered into with IMI; other than in accordance with the written
+ * permission of IMI. <BR>
+ * 
+ **/
+
 package com.imi.dolphin.sdkwebservice.service;
 
 import java.util.ArrayList;
@@ -19,6 +32,7 @@ import com.imi.dolphin.sdkwebservice.model.ButtonTemplate;
 import com.imi.dolphin.sdkwebservice.model.EasyMap;
 import com.imi.dolphin.sdkwebservice.model.ExtensionRequest;
 import com.imi.dolphin.sdkwebservice.model.ExtensionResult;
+import com.imi.dolphin.sdkwebservice.model.MailModel;
 import com.imi.dolphin.sdkwebservice.param.ParamSdk;
 import com.imi.dolphin.sdkwebservice.property.AppProperties;
 import com.imi.dolphin.sdkwebservice.util.OkHttpUtil;
@@ -26,12 +40,20 @@ import com.imi.dolphin.sdkwebservice.util.OkHttpUtil;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * 
+ * @author reja
+ *
+ */
 @Service
 public class ServiceImp implements IService {
 	public static final String OUTPUT = "output";
-	private static final String SAMPLE_IMAGE_PATH = "https://image.ibb.co/fRYz5T/photo6154476178988181548.jpg";
+	private static final String SAMPLE_IMAGE_PATH = "https://goo.gl/SHdL8D";
 	@Autowired
 	AppProperties appProperties;
+
+	@Autowired
+	IMailService svcMailService;
 
 	/**
 	 * Get parameter value from request body parameter
@@ -323,6 +345,8 @@ public class ServiceImp implements IService {
 		Map<String, String> output = new HashMap<>();
 
 		ButtonTemplate button = new ButtonTemplate();
+		button.setPictureLink(SAMPLE_IMAGE_PATH);
+		button.setPicturePath(SAMPLE_IMAGE_PATH);
 		button.setTitle("This is title");
 		button.setSubTitle("This is subtitle");
 		List<EasyMap> actions = new ArrayList<>();
@@ -334,6 +358,8 @@ public class ServiceImp implements IService {
 		ButtonBuilder buttonBuilder = new ButtonBuilder(button);
 
 		ButtonTemplate button2 = new ButtonTemplate();
+		button2.setPictureLink(SAMPLE_IMAGE_PATH);
+		button2.setPicturePath(SAMPLE_IMAGE_PATH);
 		button2.setTitle("This is title 2");
 		button2.setSubTitle("This is subtitle 2");
 		List<EasyMap> actions2 = new ArrayList<>();
@@ -345,18 +371,24 @@ public class ServiceImp implements IService {
 		ButtonBuilder buttonBuilder2 = new ButtonBuilder(button2);
 
 		ButtonTemplate button3 = new ButtonTemplate();
+		button3.setPictureLink(SAMPLE_IMAGE_PATH);
+		button3.setPicturePath(SAMPLE_IMAGE_PATH);
 		button3.setTitle("This is title 3");
 		button3.setSubTitle("This is subtitle 3");
 		button3.setButtonValues(actions2);
 		ButtonBuilder buttonBuilder3 = new ButtonBuilder(button3);
 
 		ButtonTemplate button4 = new ButtonTemplate();
+		button4.setPictureLink(SAMPLE_IMAGE_PATH);
+		button4.setPicturePath(SAMPLE_IMAGE_PATH);
 		button4.setTitle("This is title 4");
 		button4.setSubTitle("This is subtitle 4");
 		button4.setButtonValues(actions2);
 		ButtonBuilder buttonBuilder4 = new ButtonBuilder(button4);
 
 		ButtonTemplate button5 = new ButtonTemplate();
+		button5.setPictureLink(SAMPLE_IMAGE_PATH);
+		button5.setPicturePath(SAMPLE_IMAGE_PATH);
 		button5.setTitle("This is title 5");
 		button5.setSubTitle("This is subtitle 5");
 		button5.setButtonValues(actions2);
@@ -399,13 +431,16 @@ public class ServiceImp implements IService {
 	 * Send Location
 	 * 
 	 * (non-Javadoc)
-	 * @see com.imi.dolphin.sdkwebservice.service.IService#doSendLocation(com.imi.dolphin.sdkwebservice.model.ExtensionRequest)
+	 * 
+	 * @see
+	 * com.imi.dolphin.sdkwebservice.service.IService#doSendLocation(com.imi.dolphin
+	 * .sdkwebservice.model.ExtensionRequest)
 	 */
 	@Override
 	public ExtensionResult doSendLocation(ExtensionRequest extensionRequest) {
 		Map<String, String> output = new HashMap<>();
-		QuickReplyBuilder quickReplyBuilder = new QuickReplyBuilder.Builder("Kirim lokasi kakak ya").add("location", "location")
-				.build();
+		QuickReplyBuilder quickReplyBuilder = new QuickReplyBuilder.Builder("Kirim lokasi kakak ya")
+				.add("location", "location").build();
 		output.put(OUTPUT, quickReplyBuilder.string());
 		ExtensionResult extensionResult = new ExtensionResult();
 		extensionResult.setAgent(false);
@@ -460,6 +495,32 @@ public class ServiceImp implements IService {
 		Map<String, String> output = new HashMap<>();
 		output.put(OUTPUT, firstLine + ParamSdk.SPLIT_CHAT + secondLine);
 
+		ExtensionResult extensionResult = new ExtensionResult();
+		extensionResult.setAgent(false);
+		extensionResult.setRepeat(false);
+		extensionResult.setSuccess(true);
+		extensionResult.setNext(true);
+		extensionResult.setValue(output);
+		return extensionResult;
+	}
+
+	/*
+	 * Send mail configuration on application.properties file
+	 * 
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.imi.dolphin.sdkwebservice.service.IService#doSendMail(com.imi.dolphin.
+	 * sdkwebservice.model.ExtensionRequest)
+	 */
+	@Override
+	public ExtensionResult doSendMail(ExtensionRequest extensionRequest) {
+		String recipient = getEasyMapValueByName(extensionRequest, "recipient");
+		MailModel mailModel = new MailModel(recipient, "3Dolphins SDK Mail Subject", "3Dolphins SDK mail content");
+		String sendMailResult = svcMailService.sendMail(mailModel);
+
+		Map<String, String> output = new HashMap<>();
+		output.put(OUTPUT, sendMailResult);
 		ExtensionResult extensionResult = new ExtensionResult();
 		extensionResult.setAgent(false);
 		extensionResult.setRepeat(false);

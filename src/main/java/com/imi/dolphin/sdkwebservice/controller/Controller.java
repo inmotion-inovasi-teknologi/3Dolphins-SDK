@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2014 InMotion Innovation Technology. All Rights Reserved. <BR>
+ * <BR>
+ * This software contains confidential and proprietary information of
+ * InMotion Innovation Technology. ("Confidential Information").<BR>
+ * <BR>
+ * Such Confidential Information shall not be disclosed and it shall
+ * only be used in accordance with the terms of the license agreement
+ * entered into with IMI; other than in accordance with the written
+ * permission of IMI. <BR>
+ * 
+ **/
 package com.imi.dolphin.sdkwebservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.imi.dolphin.sdkwebservice.model.ExtensionRequest;
 import com.imi.dolphin.sdkwebservice.model.ExtensionResult;
 import com.imi.dolphin.sdkwebservice.property.AppProperties;
+import com.imi.dolphin.sdkwebservice.service.IMailService;
 import com.imi.dolphin.sdkwebservice.service.IService;
 
+/**
+ * 
+ * @author reja
+ * 
+ */
 @RestController
 public class Controller {
 
@@ -19,6 +37,9 @@ public class Controller {
 
 	@Autowired
 	IService svcService;
+	
+	@Autowired
+	IMailService svcMailService;
 
 	@RequestMapping("/forms")
 	public String getStarted() {
@@ -87,13 +108,19 @@ public class Controller {
 	
 	@RequestMapping("/sendLocation")
 	@PostMapping
-	public ExtensionResult doSendLocation(@RequestBody ExtensionRequest extensionRequest) {
-		return svcService.getImage(extensionRequest);
+	public ExtensionResult doBuildSendLocation(@RequestBody ExtensionRequest extensionRequest) {
+		return svcService.doSendLocation(extensionRequest);
 	}
 	
 	@RequestMapping("/image")
 	@PostMapping
 	public ExtensionResult doBuildImage(@RequestBody ExtensionRequest extensionRequest) {
 		return svcService.getImage(extensionRequest);
+	}
+	
+	@RequestMapping("/sendMail")
+	@PostMapping
+	public ExtensionResult doSendMail(@RequestBody ExtensionRequest extensionRequest) {
+		return svcService.doSendMail(extensionRequest);
 	}
 }
