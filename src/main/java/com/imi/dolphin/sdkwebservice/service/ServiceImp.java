@@ -48,7 +48,7 @@ import okhttp3.Response;
 @Service
 public class ServiceImp implements IService {
 	public static final String OUTPUT = "output";
-	private static final String SAMPLE_IMAGE_PATH = "https://goo.gl/SHdL8D";
+	private static final String SAMPLE_IMAGE_PATH = "https://bit.ly/2CpCNlJ";
 	@Autowired
 	AppProperties appProperties;
 
@@ -269,13 +269,13 @@ public class ServiceImp implements IService {
 	@Override
 	public ExtensionResult getForms(ExtensionRequest extensionRequest) {
 		Map<String, String> output = new HashMap<>();
-		FormBuilder formBuilder = new FormBuilder("FORM ID");
+		FormBuilder formBuilder = new FormBuilder(appProperties.getFormId());
 
 		ButtonTemplate button = new ButtonTemplate();
 		button.setTitle("Title is here");
 		button.setSubTitle("Subtitle is here");
-		button.setPictureLink("Picture link");
-		button.setPicturePath("Picture path");
+		button.setPictureLink(SAMPLE_IMAGE_PATH);
+		button.setPicturePath(SAMPLE_IMAGE_PATH);
 		List<EasyMap> actions = new ArrayList<>();
 		EasyMap bookAction = new EasyMap();
 		bookAction.setName("Label here");

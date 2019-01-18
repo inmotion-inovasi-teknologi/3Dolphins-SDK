@@ -29,8 +29,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -62,7 +71,17 @@
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/javax.xml.soap/saaj-api -->
+		<dependency>
+			<groupId>javax.xml.soap</groupId>
+			<artifactId>saaj-api</artifactId>
+			<version>1.3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.twilio.sdk</groupId>
+			<artifactId>twilio</artifactId>
+			<version>7.33.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -74,5 +93,10 @@
 		</plugins>
 	</build>
 
-
+	<repositories>
+		<repository>
+			<id>adobe-public</id>
+			<url>https://repo.adobe.com/nexus/content/repositories/public/</url>
+		</repository>
+	</repositories>
 </project>

@@ -12,6 +12,8 @@
  **/
 package com.imi.dolphin.sdkwebservice.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +33,7 @@ import com.imi.dolphin.sdkwebservice.service.IService;
  */
 @RestController
 public class Controller {
+	private static final Logger log = LogManager.getLogger(Controller.class);
 
 	@Autowired
 	private AppProperties appProperties;
@@ -43,6 +46,7 @@ public class Controller {
 
 	@RequestMapping("/forms")
 	public String getStarted() {
+		log.debug("getStarted() service port: {}", appProperties.getServicePort());
 		return "Hello Form, service port: " + appProperties.getServicePort() + ", " + appProperties.getFormId();
 	}
 
