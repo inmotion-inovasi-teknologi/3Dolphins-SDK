@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +49,9 @@ import okhttp3.Response;
  */
 @Service
 public class ServiceImp implements IService {
+	private static final Logger log = LogManager.getLogger(ServiceImp.class);
+
 	public static final String OUTPUT = "output";
-	private static final String SAMPLE_IMAGE_PATH = "https://bit.ly/2CpCNlJ";
 	@Autowired
 	AppProperties appProperties;
 
@@ -63,6 +66,7 @@ public class ServiceImp implements IService {
 	 * @return
 	 */
 	private String getEasyMapValueByName(ExtensionRequest extensionRequest, String name) {
+		log.debug("getEasyMapValueByName() extension request: {} name: {}", extensionRequest, name);
 		EasyMap easyMap = extensionRequest.getParameters().stream().filter(x -> x.getName().equals(name)).findAny()
 				.orElse(null);
 		if (easyMap != null) {
@@ -82,6 +86,7 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getSrnResult(ExtensionRequest extensionRequest) {
+		log.debug("getSrnResult() extension request: {}", extensionRequest);
 		ExtensionResult extensionResult = new ExtensionResult();
 		extensionResult.setAgent(false);
 		extensionResult.setRepeat(false);
@@ -108,7 +113,8 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getCustomerInfo(ExtensionRequest extensionRequest) {
-		String account = getEasyMapValueByName(extensionRequest, "account");
+		log.debug("getCustomerInfo() extension request: {}", extensionRequest);
+		String account = getEasyMapValueByName(extensionRequest, "akun");
 		String name = getEasyMapValueByName(extensionRequest, "name");
 		Map<String, String> output = new HashMap<>();
 		StringBuilder respBuilder = new StringBuilder();
@@ -147,6 +153,7 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult modifyCustomerName(ExtensionRequest extensionRequest) {
+		log.debug("modifyCustomerName() extension request: {}", extensionRequest);
 		ExtensionResult extensionResult = new ExtensionResult();
 		extensionResult.setAgent(false);
 		extensionResult.setRepeat(false);
@@ -173,6 +180,7 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getProductInfo(ExtensionRequest extensionRequest) {
+		log.debug("getProductInfo() extension request: {}", extensionRequest);
 		String model = getEasyMapValueByName(extensionRequest, "model");
 		String type = getEasyMapValueByName(extensionRequest, "type");
 
@@ -205,6 +213,7 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getMessageBody(ExtensionRequest extensionRequest) {
+		log.debug("getMessageBody() extension request: {}", extensionRequest);
 		Map<String, String> output = new HashMap<>();
 		StringBuilder respBuilder = new StringBuilder();
 
@@ -220,7 +229,7 @@ public class ServiceImp implements IService {
 			String message = jsonObject.getString("body");
 			respBuilder.append(message);
 		} catch (Exception e) {
-
+			log.debug("getMessageBody() {}", e.getMessage());
 		}
 
 		ExtensionResult extensionResult = new ExtensionResult();
@@ -245,9 +254,13 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getQuickReplies(ExtensionRequest extensionRequest) {
+		log.debug("getQuickReplies() extension request: {}", extensionRequest);
 		Map<String, String> output = new HashMap<>();
-		QuickReplyBuilder quickReplyBuilder = new QuickReplyBuilder.Builder("Hello").add("Hello World", "hello world")
-				.add("Hello Java", "B0F63CE1-F16F-4761-8881-F44C95D2792F").build();
+		Map<String, String> map = new HashMap<>();
+		map.put("Hello", "World");
+		map.put("Java", "Coffee");
+				
+		QuickReplyBuilder quickReplyBuilder = new QuickReplyBuilder.Builder("Hello").addAll(map).build();
 		output.put(OUTPUT, quickReplyBuilder.string());
 		ExtensionResult extensionResult = new ExtensionResult();
 		extensionResult.setAgent(false);
@@ -268,14 +281,15 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getForms(ExtensionRequest extensionRequest) {
+		log.debug("getForms() extension request: {}", extensionRequest);
 		Map<String, String> output = new HashMap<>();
 		FormBuilder formBuilder = new FormBuilder(appProperties.getFormId());
 
 		ButtonTemplate button = new ButtonTemplate();
 		button.setTitle("Title is here");
 		button.setSubTitle("Subtitle is here");
-		button.setPictureLink(SAMPLE_IMAGE_PATH);
-		button.setPicturePath(SAMPLE_IMAGE_PATH);
+		button.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
+		button.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
 		List<EasyMap> actions = new ArrayList<>();
 		EasyMap bookAction = new EasyMap();
 		bookAction.setName("Label here");
@@ -305,13 +319,14 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getButtons(ExtensionRequest extensionRequest) {
+		log.debug("getButtons() extension request: {}", extensionRequest);
 		Map<String, String> output = new HashMap<>();
 
 		ButtonTemplate button = new ButtonTemplate();
 		button.setTitle("This is title");
 		button.setSubTitle("This is subtitle");
-		button.setPictureLink(SAMPLE_IMAGE_PATH);
-		button.setPicturePath(SAMPLE_IMAGE_PATH);
+		button.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
+		button.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
 		List<EasyMap> actions = new ArrayList<>();
 		EasyMap bookAction = new EasyMap();
 		bookAction.setName("Label");
@@ -342,11 +357,12 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getCarousel(ExtensionRequest extensionRequest) {
+		log.debug("getCarousel() extension request: {}", extensionRequest);
 		Map<String, String> output = new HashMap<>();
 
 		ButtonTemplate button = new ButtonTemplate();
-		button.setPictureLink(SAMPLE_IMAGE_PATH);
-		button.setPicturePath(SAMPLE_IMAGE_PATH);
+		button.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
+		button.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
 		button.setTitle("This is title");
 		button.setSubTitle("This is subtitle");
 		List<EasyMap> actions = new ArrayList<>();
@@ -358,8 +374,8 @@ public class ServiceImp implements IService {
 		ButtonBuilder buttonBuilder = new ButtonBuilder(button);
 
 		ButtonTemplate button2 = new ButtonTemplate();
-		button2.setPictureLink(SAMPLE_IMAGE_PATH);
-		button2.setPicturePath(SAMPLE_IMAGE_PATH);
+		button2.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
+		button2.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
 		button2.setTitle("This is title 2");
 		button2.setSubTitle("This is subtitle 2");
 		List<EasyMap> actions2 = new ArrayList<>();
@@ -371,24 +387,24 @@ public class ServiceImp implements IService {
 		ButtonBuilder buttonBuilder2 = new ButtonBuilder(button2);
 
 		ButtonTemplate button3 = new ButtonTemplate();
-		button3.setPictureLink(SAMPLE_IMAGE_PATH);
-		button3.setPicturePath(SAMPLE_IMAGE_PATH);
+		button3.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
+		button3.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
 		button3.setTitle("This is title 3");
 		button3.setSubTitle("This is subtitle 3");
 		button3.setButtonValues(actions2);
 		ButtonBuilder buttonBuilder3 = new ButtonBuilder(button3);
 
 		ButtonTemplate button4 = new ButtonTemplate();
-		button4.setPictureLink(SAMPLE_IMAGE_PATH);
-		button4.setPicturePath(SAMPLE_IMAGE_PATH);
+		button4.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
+		button4.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
 		button4.setTitle("This is title 4");
 		button4.setSubTitle("This is subtitle 4");
 		button4.setButtonValues(actions2);
 		ButtonBuilder buttonBuilder4 = new ButtonBuilder(button4);
 
 		ButtonTemplate button5 = new ButtonTemplate();
-		button5.setPictureLink(SAMPLE_IMAGE_PATH);
-		button5.setPicturePath(SAMPLE_IMAGE_PATH);
+		button5.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
+		button5.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
 		button5.setTitle("This is title 5");
 		button5.setSubTitle("This is subtitle 5");
 		button5.setButtonValues(actions2);
@@ -419,6 +435,7 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult doTransferToAgent(ExtensionRequest extensionRequest) {
+		log.debug("doTransferToAgent() extension request: {}", extensionRequest);
 		ExtensionResult extensionResult = new ExtensionResult();
 		extensionResult.setAgent(true);
 		extensionResult.setRepeat(false);
@@ -438,9 +455,10 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult doSendLocation(ExtensionRequest extensionRequest) {
+		log.debug("doSendLocation() extension request: {}", extensionRequest);
 		Map<String, String> output = new HashMap<>();
 		QuickReplyBuilder quickReplyBuilder = new QuickReplyBuilder.Builder("Kirim lokasi kakak ya")
-				.add("location", "location").build();
+				.add("Location", "location").build();
 		output.put(OUTPUT, quickReplyBuilder.string());
 		ExtensionResult extensionResult = new ExtensionResult();
 		extensionResult.setAgent(false);
@@ -461,11 +479,12 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getImage(ExtensionRequest extensionRequest) {
+		log.debug("getImage() extension request: {}", extensionRequest);
 		Map<String, String> output = new HashMap<>();
 
 		ButtonTemplate image = new ButtonTemplate();
-		image.setPictureLink(SAMPLE_IMAGE_PATH);
-		image.setPicturePath(SAMPLE_IMAGE_PATH);
+		image.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
+		image.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
 
 		ImageBuilder imageBuilder = new ImageBuilder(image);
 		output.put(OUTPUT, imageBuilder.build());
@@ -490,6 +509,7 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getSplitConversation(ExtensionRequest extensionRequest) {
+		log.debug("getSplitConversation() extension request: {}", extensionRequest);
 		String firstLine = "Terima kasih {customer_name}";
 		String secondLine = "Data telah kami terima dan agent kami akan proses terlebih dahulu ya kak";
 		Map<String, String> output = new HashMap<>();
@@ -515,6 +535,7 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult doSendMail(ExtensionRequest extensionRequest) {
+		log.debug("doSendMail() extension request: {}", extensionRequest);
 		String recipient = getEasyMapValueByName(extensionRequest, "recipient");
 		MailModel mailModel = new MailModel(recipient, "3Dolphins SDK Mail Subject", "3Dolphins SDK mail content");
 		String sendMailResult = svcMailService.sendMail(mailModel);
@@ -529,5 +550,5 @@ public class ServiceImp implements IService {
 		extensionResult.setValue(output);
 		return extensionResult;
 	}
-
+	
 }

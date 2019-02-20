@@ -127,4 +127,5 @@ public class Controller {
 	public ExtensionResult doSendMail(@RequestBody ExtensionRequest extensionRequest) {
 		return svcService.doSendMail(extensionRequest);
 	}
+
 }

@@ -13,6 +13,10 @@
 
 package com.imi.dolphin.sdkwebservice.builder;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 /**
  * Quick Reply Template 
  * ex : {replies:title=Hello@===@hello world,Java@===@hello java}
@@ -75,6 +79,23 @@ public class QuickReplyBuilder {
 			return this;
 		}
 
+		/**
+		 * add list of quick replies
+		 * 
+		 * @param items
+		 * @return
+		 */
+		public Builder addAll(Map<String,String> items) {
+			if (quickReply != null) {
+			    Iterator<Entry<String, String>> it = items.entrySet().iterator();
+			    while (it.hasNext()) {
+			        Entry<String, String> item = it.next();
+					quickReply.append(item.getKey()).append("@===@").append(item.getValue()).append(COMMA);
+			    }
+			}
+			return this;
+		}
+		
 		/**
 		 * 
 		 * @return quick reply builder

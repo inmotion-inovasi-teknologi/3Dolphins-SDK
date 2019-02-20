@@ -50,4 +50,5 @@ public interface IService {
 	ExtensionResult getSplitConversation(ExtensionRequest extensionRequest);
 	
 	ExtensionResult doSendMail(ExtensionRequest extensionRequest);
+	
 }
