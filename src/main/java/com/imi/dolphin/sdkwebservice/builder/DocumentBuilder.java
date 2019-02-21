@@ -22,28 +22,28 @@ import com.imi.dolphin.sdkwebservice.model.ButtonTemplate;
  * @author reja
  *
  */
-public class ImageBuilder {
+public class DocumentBuilder {
 	private ButtonTemplate buttonTemplateEntity;
-	private static final String IMAGE_SYNTAX = "{image:";
-	private static final String IMAGE_SYNTAX_SUFFIX = "}";
+	private static final String DOCUMENT_SYNTAX = "{file:";
+	private static final String DOCUMENT_SYNTAX_SUFFIX = "}";
 	
 	/**
 	 * 
 	 * @param buttonTemplateEntity
 	 */
-	public ImageBuilder(ButtonTemplate buttonTemplateEntity) {
+	public DocumentBuilder(ButtonTemplate buttonTemplateEntity) {
 		this.buttonTemplateEntity = buttonTemplateEntity;
 	}
 	
 	/**
 	 * 
-	 * @return button string
+	 * @return document string
 	 */
 	public String build() {
 		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-		String image = gson.toJson(getButtonTemplateEntity());
-		image =  IMAGE_SYNTAX + image + IMAGE_SYNTAX_SUFFIX;
-		return image;
+		String document = gson.toJson(getButtonTemplateEntity());
+		document =  DOCUMENT_SYNTAX + document + DOCUMENT_SYNTAX_SUFFIX;
+		return document;
 	}
 
 	/**
