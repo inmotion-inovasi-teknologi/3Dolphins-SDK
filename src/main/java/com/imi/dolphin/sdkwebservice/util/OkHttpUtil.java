@@ -15,14 +15,20 @@ package com.imi.dolphin.sdkwebservice.util;
 
 import java.security.cert.CertificateException;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.imi.dolphin.sdkwebservice.property.AppProperties;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -32,12 +38,16 @@ import okhttp3.Request;
  * @author reja
  *
  */
+@Component
 public class OkHttpUtil {
 	private static final Logger log = LoggerFactory.getLogger(OkHttpUtil.class);
 	private static final String SSL = "SSL";
 	
 	private OkHttpClient client;
 
+	@Autowired
+	AppProperties appProperties;
+	
 	public static final String POST="POST";
 	public static final String PUT="PUT";
 	public static final String GET="GET";
@@ -57,7 +67,19 @@ public class OkHttpUtil {
 	public void init(boolean ignoreCertificate) {
 		log.debug("Initialising httpUtil with default configuration ignoreCertificate: {}", ignoreCertificate);
 
-		OkHttpClient.Builder builder = new OkHttpClient.Builder();
+		int connectTimeout = 15;
+		int readTimeout = 15;
+
+		String connectTimeoutText = appProperties.getSdkConnectTimeout();
+		String readTimeoutText = appProperties.getSdkReadTimeout();
+		if (StringUtils.isNumeric(connectTimeoutText)) {
+			connectTimeout = Integer.parseInt(connectTimeoutText);
+		}
+		if (StringUtils.isNumeric(readTimeoutText)) {
+			readTimeout = Integer.parseInt(readTimeoutText);
+		}
+		OkHttpClient.Builder builder = new OkHttpClient.Builder().connectTimeout(connectTimeout, TimeUnit.SECONDS)
+				.readTimeout(readTimeout, TimeUnit.SECONDS);
 		if (ignoreCertificate) {
 			configureToIgnoreCertificate(builder);
 		}

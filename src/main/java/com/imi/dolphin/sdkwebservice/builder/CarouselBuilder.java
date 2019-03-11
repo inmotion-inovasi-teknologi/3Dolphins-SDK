@@ -13,6 +13,8 @@
 
 package com.imi.dolphin.sdkwebservice.builder;
 
+import java.util.List;
+
 /**
  * 
  * @author reja
@@ -29,6 +31,16 @@ public class CarouselBuilder {
 	 */
 	public CarouselBuilder(String... buttonBuilders) {
 		for(String buttonBuilder: buttonBuilders) {
+			if(stringBuilder==null) {
+				stringBuilder = new StringBuilder();
+			}
+			stringBuilder.append(buttonBuilder).append(CONSTANT_SPLIT_SYNTAX);
+		}
+		this.buttonBuilders = stringBuilder.toString();
+	}
+	
+	public CarouselBuilder(List<String> buttonBuilders) {
+		for (String buttonBuilder : buttonBuilders) {
 			if(stringBuilder==null) {
 				stringBuilder = new StringBuilder();
 			}

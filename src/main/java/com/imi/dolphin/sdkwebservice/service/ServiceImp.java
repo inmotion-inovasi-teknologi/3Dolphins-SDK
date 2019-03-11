@@ -31,10 +31,12 @@ import com.imi.dolphin.sdkwebservice.builder.FormBuilder;
 import com.imi.dolphin.sdkwebservice.builder.ImageBuilder;
 import com.imi.dolphin.sdkwebservice.builder.QuickReplyBuilder;
 import com.imi.dolphin.sdkwebservice.model.ButtonTemplate;
+import com.imi.dolphin.sdkwebservice.model.Contact;
 import com.imi.dolphin.sdkwebservice.model.EasyMap;
 import com.imi.dolphin.sdkwebservice.model.ExtensionRequest;
 import com.imi.dolphin.sdkwebservice.model.ExtensionResult;
 import com.imi.dolphin.sdkwebservice.model.MailModel;
+import com.imi.dolphin.sdkwebservice.model.UserToken;
 import com.imi.dolphin.sdkwebservice.param.ParamSdk;
 import com.imi.dolphin.sdkwebservice.property.AppProperties;
 import com.imi.dolphin.sdkwebservice.util.OkHttpUtil;
@@ -52,12 +54,20 @@ public class ServiceImp implements IService {
 	private static final Logger log = LogManager.getLogger(ServiceImp.class);
 
 	public static final String OUTPUT = "output";
+	private UserToken userToken;
+	
 	@Autowired
 	AppProperties appProperties;
 
 	@Autowired
 	IMailService svcMailService;
+	
+	@Autowired
+	IDolphinService svcDolphinService;
 
+	@Autowired
+	OkHttpUtil okHttpUtil;
+	
 	/**
 	 * Get parameter value from request body parameter
 	 * 
@@ -218,7 +228,6 @@ public class ServiceImp implements IService {
 		StringBuilder respBuilder = new StringBuilder();
 
 		try {
-			OkHttpUtil okHttpUtil = new OkHttpUtil();
 			okHttpUtil.init(true);
 			Request request = new Request.Builder().url("https://jsonplaceholder.typicode.com/comments").get().build();
 			Response response = okHttpUtil.getClient().newCall(request).execute();
@@ -259,7 +268,7 @@ public class ServiceImp implements IService {
 		Map<String, String> map = new HashMap<>();
 		map.put("Hello", "World");
 		map.put("Java", "Coffee");
-				
+
 		QuickReplyBuilder quickReplyBuilder = new QuickReplyBuilder.Builder("Hello").addAll(map).build();
 		output.put(OUTPUT, quickReplyBuilder.string());
 		ExtensionResult extensionResult = new ExtensionResult();
@@ -323,14 +332,14 @@ public class ServiceImp implements IService {
 		Map<String, String> output = new HashMap<>();
 
 		ButtonTemplate button = new ButtonTemplate();
-		button.setTitle("This is title");
-		button.setSubTitle("This is subtitle");
+		button.setTitle(ParamSdk.SAMPLE_TITLE);
+		button.setSubTitle(ParamSdk.SAMPLE_SUBTITLE);
 		button.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
 		button.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
 		List<EasyMap> actions = new ArrayList<>();
 		EasyMap bookAction = new EasyMap();
-		bookAction.setName("Label");
-		bookAction.setValue("Payload");
+		bookAction.setName(ParamSdk.SAMPLE_LABEL);
+		bookAction.setValue(ParamSdk.SAMPLE_PAYLOAD);
 		actions.add(bookAction);
 		button.setButtonValues(actions);
 
@@ -360,59 +369,25 @@ public class ServiceImp implements IService {
 		log.debug("getCarousel() extension request: {}", extensionRequest);
 		Map<String, String> output = new HashMap<>();
 
-		ButtonTemplate button = new ButtonTemplate();
-		button.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
-		button.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
-		button.setTitle("This is title");
-		button.setSubTitle("This is subtitle");
-		List<EasyMap> actions = new ArrayList<>();
-		EasyMap bookAction = new EasyMap();
-		bookAction.setName("Label");
-		bookAction.setValue("Payload");
-		actions.add(bookAction);
-		button.setButtonValues(actions);
-		ButtonBuilder buttonBuilder = new ButtonBuilder(button);
-
-		ButtonTemplate button2 = new ButtonTemplate();
-		button2.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
-		button2.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
-		button2.setTitle("This is title 2");
-		button2.setSubTitle("This is subtitle 2");
-		List<EasyMap> actions2 = new ArrayList<>();
-		EasyMap bookAction2 = new EasyMap();
-		bookAction2.setName("Label 2");
-		bookAction2.setValue("Payload 2");
-		actions2.add(bookAction2);
-		button2.setButtonValues(actions2);
-		ButtonBuilder buttonBuilder2 = new ButtonBuilder(button2);
-
-		ButtonTemplate button3 = new ButtonTemplate();
-		button3.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
-		button3.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
-		button3.setTitle("This is title 3");
-		button3.setSubTitle("This is subtitle 3");
-		button3.setButtonValues(actions2);
-		ButtonBuilder buttonBuilder3 = new ButtonBuilder(button3);
-
-		ButtonTemplate button4 = new ButtonTemplate();
-		button4.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
-		button4.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
-		button4.setTitle("This is title 4");
-		button4.setSubTitle("This is subtitle 4");
-		button4.setButtonValues(actions2);
-		ButtonBuilder buttonBuilder4 = new ButtonBuilder(button4);
-
-		ButtonTemplate button5 = new ButtonTemplate();
-		button5.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
-		button5.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
-		button5.setTitle("This is title 5");
-		button5.setSubTitle("This is subtitle 5");
-		button5.setButtonValues(actions2);
-		ButtonBuilder buttonBuilder5 = new ButtonBuilder(button5);
-
-		CarouselBuilder carouselBuilder = new CarouselBuilder(buttonBuilder.build(), buttonBuilder2.build(),
-				buttonBuilder3.build(), buttonBuilder4.build(), buttonBuilder5.build());
-
+		List<String> buttonList = new ArrayList<>();
+		ButtonTemplate button;
+		ButtonBuilder buttonBuilder;
+		for (int i = 0; i < 6; i++) {
+			button = new ButtonTemplate();
+			button.setPictureLink(ParamSdk.SAMPLE_IMAGE_PATH);
+			button.setPicturePath(ParamSdk.SAMPLE_IMAGE_PATH);
+			button.setTitle(ParamSdk.SAMPLE_TITLE.concat(String.valueOf(i)));
+			button.setSubTitle(ParamSdk.SAMPLE_SUBTITLE.concat(String.valueOf(i)));
+			List<EasyMap> actions = new ArrayList<>();
+			EasyMap bookAction = new EasyMap();
+			bookAction.setName(ParamSdk.SAMPLE_LABEL);
+			bookAction.setValue(ParamSdk.SAMPLE_PAYLOAD);
+			actions.add(bookAction);
+			button.setButtonValues(actions);
+			buttonBuilder = new ButtonBuilder(button);
+			buttonList.add(buttonBuilder.build());
+		}
+		CarouselBuilder carouselBuilder = new CarouselBuilder(buttonList);
 		output.put(OUTPUT, carouselBuilder.build());
 
 		ExtensionResult extensionResult = new ExtensionResult();
@@ -550,5 +525,28 @@ public class ServiceImp implements IService {
 		extensionResult.setValue(output);
 		return extensionResult;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see com.imi.dolphin.sdkwebservice.service.IService#getDolphinResponse(com.imi.dolphin.sdkwebservice.model.ExtensionRequest)
+	 */
+	@Override
+	public ExtensionResult getDolphinResponse(ExtensionRequest extensionRequest) {
+		userToken = svcDolphinService.getUserToken(userToken);
+		log.debug("getDolphinResponse() extension request: {} user token: {}", extensionRequest, userToken);
+		String contactId =extensionRequest.getIntent().getTicket().getContactId();
+		Contact contact = svcDolphinService.getCustomer(userToken, contactId);
+		contact.setContactFirstName("YOUR NAME");
+		contact = svcDolphinService.updateCustomer(userToken, contact);
+		
+		Map<String, String> output = new HashMap<>();
+		output.put(OUTPUT, "PING " + contact.getContactFirstName());
+		ExtensionResult extensionResult = new ExtensionResult();
+		extensionResult.setAgent(false);
+		extensionResult.setRepeat(false);
+		extensionResult.setSuccess(true);
+		extensionResult.setNext(true);
+		extensionResult.setValue(output);
+		return extensionResult;
+	}
+
 }

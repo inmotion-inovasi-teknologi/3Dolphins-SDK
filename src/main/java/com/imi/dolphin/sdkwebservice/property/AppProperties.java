@@ -47,6 +47,29 @@ public class AppProperties {
 	@Value("${mail.smtp.port}")
 	String mailSmtpPort;
 
+	@Value("${sdk.connectTimeout}")
+	String sdkConnectTimeout;
+	
+	@Value("${sdk.readTimeout}")
+	String sdkReadTimeout;
+	
+	@Value("${sdk.username}")
+	String sdkDolphinUsername;
+	
+	@Value("${sdk.password}")
+	String sdkDolphinPassword;
+	
+	@Value("${sdk.dolphin.base.url}")
+	String sdkDolphinBaseUrl;
+
+	@Value("${sdk.dolphin.graph.auth}")
+	String sdkDolphinGraphAuth;
+	
+	@Value("${sdk.dolphin.graph.contacts}")
+	String sdkDolphinGraphContacts;
+	
+	@Value("${sdk.dolphin.graph.contacts.update}")
+	String sdkDolphinGraphContactsUpdate;
 	
 	public String getServicePort() {
 		return servicePort;
@@ -110,6 +133,118 @@ public class AppProperties {
 
 	public void setMailSmtpPort(String mailSmtpPort) {
 		this.mailSmtpPort = mailSmtpPort;
+	}
+
+	/**
+	 * @return the sdkConnectTimeout
+	 */
+	public String getSdkConnectTimeout() {
+		return sdkConnectTimeout;
+	}
+
+	/**
+	 * @param sdkConnectTimeout the sdkConnectTimeout to set
+	 */
+	public void setSdkConnectTimeout(String sdkConnectTimeout) {
+		this.sdkConnectTimeout = sdkConnectTimeout;
+	}
+
+	/**
+	 * @return the sdkReadTimeout
+	 */
+	public String getSdkReadTimeout() {
+		return sdkReadTimeout;
+	}
+
+	/**
+	 * @param sdkReadTimeout the sdkReadTimeout to set
+	 */
+	public void setSdkReadTimeout(String sdkReadTimeout) {
+		this.sdkReadTimeout = sdkReadTimeout;
+	}
+
+	/**
+	 * @return the sdkDolphinUsername
+	 */
+	public String getSdkDolphinUsername() {
+		return sdkDolphinUsername;
+	}
+
+	/**
+	 * @param sdkDolphinUsername the sdkDolphinUsername to set
+	 */
+	public void setSdkDolphinUsername(String sdkDolphinUsername) {
+		this.sdkDolphinUsername = sdkDolphinUsername;
+	}
+
+	/**
+	 * @return the sdkDolphinPassword
+	 */
+	public String getSdkDolphinPassword() {
+		return sdkDolphinPassword;
+	}
+
+	/**
+	 * @param sdkDolphinPassword the sdkDolphinPassword to set
+	 */
+	public void setSdkDolphinPassword(String sdkDolphinPassword) {
+		this.sdkDolphinPassword = sdkDolphinPassword;
+	}
+
+	/**
+	 * @return the sdkDolphinBaseUrl
+	 */
+	public String getSdkDolphinBaseUrl() {
+		return sdkDolphinBaseUrl;
+	}
+
+	/**
+	 * @param sdkDolphinBaseUrl the sdkDolphinBaseUrl to set
+	 */
+	public void setSdkDolphinBaseUrl(String sdkDolphinBaseUrl) {
+		this.sdkDolphinBaseUrl = sdkDolphinBaseUrl;
+	}
+
+	/**
+	 * @return the sdkDolphinGraphAuth
+	 */
+	public String getSdkDolphinGraphAuth() {
+		return sdkDolphinGraphAuth;
+	}
+
+	/**
+	 * @param sdkDolphinGraphAuth the sdkDolphinGraphAuth to set
+	 */
+	public void setSdkDolphinGraphAuth(String sdkDolphinGraphAuth) {
+		this.sdkDolphinGraphAuth = sdkDolphinGraphAuth;
+	}
+
+	/**
+	 * @return the sdkDolphinGraphContacts
+	 */
+	public String getSdkDolphinGraphContacts() {
+		return sdkDolphinGraphContacts;
+	}
+
+	/**
+	 * @param sdkDolphinGraphContacts the sdkDolphinGraphContacts to set
+	 */
+	public void setSdkDolphinGraphContacts(String sdkDolphinGraphContacts) {
+		this.sdkDolphinGraphContacts = sdkDolphinGraphContacts;
+	}
+
+	/**
+	 * @return the sdkDolphinGraphContactsUpdate
+	 */
+	public String getSdkDolphinGraphContactsUpdate() {
+		return sdkDolphinGraphContactsUpdate;
+	}
+
+	/**
+	 * @param sdkDolphinGraphContactsUpdate the sdkDolphinGraphContactsUpdate to set
+	 */
+	public void setSdkDolphinGraphContactsUpdate(String sdkDolphinGraphContactsUpdate) {
+		this.sdkDolphinGraphContactsUpdate = sdkDolphinGraphContactsUpdate;
 	}
 
 }

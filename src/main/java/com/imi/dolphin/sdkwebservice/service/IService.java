@@ -51,4 +51,5 @@ public interface IService {
 	
 	ExtensionResult doSendMail(ExtensionRequest extensionRequest);
 	
+	ExtensionResult getDolphinResponse(ExtensionRequest extensionRequest);
 }

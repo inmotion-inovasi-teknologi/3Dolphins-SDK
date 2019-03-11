@@ -30,8 +30,8 @@
             <AppenderRef ref="RollingFile" />
         </Root>
  
-        <!-- LOG "com.imi.dolphin.ws.salesforce*" at TRACE level -->
-        <Logger name="com.imi.dolphin.sdkwebservice" level="info"></Logger>
+        <!-- LOG "com.imi.dolphin.ws.sdkwebservice*" at TRACE level -->
+        <Logger name="com.imi.dolphin.sdkwebservice" level="debug"></Logger>
     </Loggers>
  
 </Configuration>

@@ -44,6 +44,12 @@ public class Controller {
 	@Autowired
 	IMailService svcMailService;
 
+	@RequestMapping("/ping")
+	@PostMapping
+	public ExtensionResult doPingRequest(@RequestBody ExtensionRequest extensionRequest) {
+		return svcService.getDolphinResponse(extensionRequest);
+	}
+	
 	@RequestMapping("/forms")
 	public String getStarted() {
 		log.debug("getStarted() service port: {}", appProperties.getServicePort());

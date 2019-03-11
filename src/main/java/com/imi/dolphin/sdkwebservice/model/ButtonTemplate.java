@@ -32,6 +32,18 @@ public class ButtonTemplate implements Serializable {
 	private List<EasyMap> buttonValues;
 	private String group;
 
+	public ButtonTemplate() {
+		
+	}
+	
+	public ButtonTemplate(String title, String subTitle,String pictureLink, String picturePath) {
+		super();
+		this.title = title;
+		this.subTitle = subTitle;
+		this.pictureLink = pictureLink;
+		this.picturePath = picturePath;
+	}
+
 	/**
 	 * @return Get the id
 	 */
