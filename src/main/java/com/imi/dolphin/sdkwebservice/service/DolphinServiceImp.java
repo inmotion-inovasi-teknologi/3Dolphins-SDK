@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -138,7 +139,8 @@ public class DolphinServiceImp implements IDolphinService {
 			Response response = okHttpUtil.getClient().newCall(request).execute();
 			String jsonData = response.body().string();
 			JSONObject jsonObject = new JSONObject(jsonData);
-			JSONObject data = jsonObject.getJSONObject("data");
+			JSONArray jsonArray = jsonObject.getJSONArray("data");
+			JSONObject data = jsonArray.getJSONObject(0);
 
 			return new Gson().fromJson(data.toString(), Contact.class);
 		} catch (Exception e) {
