@@ -62,8 +62,14 @@ public class AppProperties {
 	@Value("${sdk.dolphin.base.url}")
 	String sdkDolphinBaseUrl;
 
+	@Value("${sdk.dolphin.graph.ping}")
+	String sdkDolphinGraphPing;
+	
 	@Value("${sdk.dolphin.graph.auth}")
 	String sdkDolphinGraphAuth;
+	
+	@Value("${sdk.dolphin.graph.auth.token}")
+	String sdkDolphinGraphAuthToken;
 	
 	@Value("${sdk.dolphin.graph.contacts}")
 	String sdkDolphinGraphContacts;
@@ -206,6 +212,20 @@ public class AppProperties {
 	}
 
 	/**
+	 * @return the sdkDolphinGraphPing
+	 */
+	public String getSdkDolphinGraphPing() {
+		return sdkDolphinGraphPing;
+	}
+
+	/**
+	 * @param sdkDolphinGraphPing the sdkDolphinGraphPing to set
+	 */
+	public void setSdkDolphinGraphPing(String sdkDolphinGraphPing) {
+		this.sdkDolphinGraphPing = sdkDolphinGraphPing;
+	}
+
+	/**
 	 * @return the sdkDolphinGraphAuth
 	 */
 	public String getSdkDolphinGraphAuth() {
@@ -217,6 +237,20 @@ public class AppProperties {
 	 */
 	public void setSdkDolphinGraphAuth(String sdkDolphinGraphAuth) {
 		this.sdkDolphinGraphAuth = sdkDolphinGraphAuth;
+	}
+
+	/**
+	 * @return the sdkDolphinGraphAuthToken
+	 */
+	public String getSdkDolphinGraphAuthToken() {
+		return sdkDolphinGraphAuthToken;
+	}
+
+	/**
+	 * @param sdkDolphinGraphAuthToken the sdkDolphinGraphAuthToken to set
+	 */
+	public void setSdkDolphinGraphAuthToken(String sdkDolphinGraphAuthToken) {
+		this.sdkDolphinGraphAuthToken = sdkDolphinGraphAuthToken;
 	}
 
 	/**

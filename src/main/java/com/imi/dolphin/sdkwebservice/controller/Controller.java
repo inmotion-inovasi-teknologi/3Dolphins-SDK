@@ -50,6 +50,12 @@ public class Controller {
 		return svcService.getDolphinResponse(extensionRequest);
 	}
 	
+	@RequestMapping("/pingAuth")
+	@PostMapping
+	public ExtensionResult doPingAuthRequest(@RequestBody ExtensionRequest extensionRequest) {
+		return svcService.getPingResponse(extensionRequest);
+	}
+	
 	@RequestMapping("/forms")
 	public String getStarted() {
 		log.debug("getStarted() service port: {}", appProperties.getServicePort());

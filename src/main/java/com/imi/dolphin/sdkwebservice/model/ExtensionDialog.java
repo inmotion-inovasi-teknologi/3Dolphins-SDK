@@ -21,17 +21,16 @@ import java.io.Serializable;
 public class ExtensionDialog implements Serializable {
 	private static final long serialVersionUID = 6140264421056884944L;
 	private String intention;
-	private String integration;
 	private String id;
 	private String botId;
 	private TicketModel ticket;
+	private String botToken;
 
 	public ExtensionDialog() {} 
 	
-	public ExtensionDialog(String id, String intent, String integration, String botId, TicketModel ticket) {
+	public ExtensionDialog(String id, String intent, String botId, TicketModel ticket) {
 		this.id = id;
 		this.intention = intent;
-		this.integration = integration;
 		this.botId = botId;
 		this.ticket = ticket;
 	}
@@ -48,20 +47,6 @@ public class ExtensionDialog implements Serializable {
 	 */
 	public void setIntention(String intention) {
 		this.intention = intention;
-	}
-
-	/**
-	 * @return Get the integration
-	 */
-	public String getIntegration() {
-		return integration;
-	}
-
-	/**
-	 * @param integration the integration to set
-	 */
-	public void setIntegration(String integration) {
-		this.integration = integration;
 	}
 
 	/**
@@ -105,4 +90,19 @@ public class ExtensionDialog implements Serializable {
 	public void setTicket(TicketModel ticket) {
 		this.ticket = ticket;
 	}
+
+	/**
+	 * @return the botToken
+	 */
+	public String getBotToken() {
+		return botToken;
+	}
+
+	/**
+	 * @param botToken the botToken to set
+	 */
+	public void setBotToken(String botToken) {
+		this.botToken = botToken;
+	}
+	
 }

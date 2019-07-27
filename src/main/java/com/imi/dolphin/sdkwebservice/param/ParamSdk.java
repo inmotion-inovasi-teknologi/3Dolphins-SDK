@@ -4,7 +4,8 @@ import java.text.SimpleDateFormat;
 
 public class ParamSdk {
 	public static final String SPLIT_CHAT = "&split&";
-
+	public static final String CONSTANT_EMPTY = "";
+	
 	public static final String SAMPLE_TITLE = "This is title";
 	public static final String SAMPLE_SUBTITLE = "This is subtitle";	
 	public static final String SAMPLE_IMAGE_PATH = "https://i.ibb.co/yRHSXLh/inmotion-logo.png";

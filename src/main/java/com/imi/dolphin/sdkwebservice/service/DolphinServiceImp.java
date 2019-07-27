@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.imi.dolphin.sdkwebservice.model.Contact;
+import com.imi.dolphin.sdkwebservice.model.ExtensionRequest;
 import com.imi.dolphin.sdkwebservice.model.UserToken;
 import com.imi.dolphin.sdkwebservice.param.ParamSdk;
 import com.imi.dolphin.sdkwebservice.property.AppProperties;
@@ -34,6 +35,7 @@ import com.imi.dolphin.sdkwebservice.util.OkHttpUtil;
 
 import okhttp3.HttpUrl;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -51,7 +53,7 @@ public class DolphinServiceImp implements IDolphinService {
 
 	@Autowired
 	OkHttpUtil okHttpUtil;
-
+	
 	/**
 	 * Check token is still exist (not expired)
 	 * 
@@ -79,11 +81,73 @@ public class DolphinServiceImp implements IDolphinService {
 		return true;
 	}
 
-	/**
-	 * Refresh User Token
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.imi.dolphin.sdkwebservice.service.IDolphinService#isValidAuthToken(java.
+	 * lang.String)
 	 */
 	@Override
-	public UserToken getUserToken(UserToken userToken) {
+	public boolean isValidAuthToken(String token) {
+		log.debug("isValidAuthToken() token: {}", token);
+		try {
+			Map<String, String> tokenMap = new HashMap<>();
+			tokenMap.put(ParamSdk.SDK_AUTHORIZATION, "Bearer " + token);
+
+			okHttpUtil.init(true);
+			Request.Builder builder = okHttpUtil.getBuilder();
+			okHttpUtil.addHeaders(builder, tokenMap);
+			RequestBody body = RequestBody.create(null, new byte[] {});
+			Request request = builder.url(appProperties.getSdkDolphinBaseUrl() + appProperties.getSdkDolphinGraphPing())
+					.post(body).build();
+			Response response = okHttpUtil.getClient().newCall(request).execute();
+			String jsonData = response.body().string();
+			JSONObject jsonObject = new JSONObject(jsonData);
+			JSONObject data = jsonObject.getJSONObject("data");
+			if (data != null) {
+				return true;
+			}
+		} catch (Exception e) {
+			log.debug("isValidAuthToken() {}", e.getMessage(), e);
+		}
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.imi.dolphin.sdkwebservice.service.IDolphinService#getPingResponse(com.imi
+	 * .dolphin.sdkwebservice.model.UserToken)
+	 */
+	@Override
+	public String getPingResponse(UserToken userToken) {
+		log.debug("getPingResponse() userToken: {}", userToken);
+		try {
+			okHttpUtil.init(true);
+			Request.Builder builder = okHttpUtil.getBuilder();
+			okHttpUtil.addHeaders(builder, userToken.getAuth());
+			RequestBody body = RequestBody.create(null, new byte[] {});
+			Request request = builder.url(appProperties.getSdkDolphinBaseUrl() + appProperties.getSdkDolphinGraphPing())
+					.post(body).build();
+			Response response = okHttpUtil.getClient().newCall(request).execute();
+			String jsonData = response.body().string();
+			JSONObject jsonObject = new JSONObject(jsonData);
+			return jsonObject.getString("result");
+		} catch (Exception e) {
+			log.debug("getPingResponse() error: {}", e.getMessage());
+		}
+		return null;
+	}
+
+	/**
+	 * Refresh User Token
+	 * 
+	 * Token akan handle hardcode user dan auth sdk user
+	 */
+	@Override
+	public UserToken getUserToken(UserToken userToken, ExtensionRequest extensionRequest) {
 		log.debug("getUserToken() userToken: {}", userToken);
 		try {
 			if (!isTokenExistAndNotExpired(userToken)) {
@@ -101,11 +165,11 @@ public class DolphinServiceImp implements IDolphinService {
 				Response response = okHttpUtil.getClient().newCall(request).execute();
 				String jsonData = response.body().string();
 				JSONObject jObject = new JSONObject(jsonData);
-				
+
 				userToken = new UserToken();
 				userToken.setToken("Bearer " + jObject.getString(ParamSdk.CONSTANT_TOKEN));
 				userToken.setExpireAt(jObject.getString(ParamSdk.CONSTANT_EXPIRED));
-				
+
 				Map<String, String> auth = new HashMap<>();
 				auth.put(ParamSdk.SDK_AUTHORIZATION, userToken.getToken());
 				userToken.setAuth(auth);
@@ -160,7 +224,7 @@ public class DolphinServiceImp implements IDolphinService {
 		try {
 			getCustomer(userToken, contact.getId());
 			String jsonBody = new Gson().toJson(contact);
-			
+
 			Request.Builder builder = okHttpUtil.getBuilder();
 			okHttpUtil.addHeaders(builder, userToken.getAuth());
 			okhttp3.RequestBody body = okhttp3.RequestBody.create(ParamSdk.JSON, jsonBody);
@@ -170,7 +234,7 @@ public class DolphinServiceImp implements IDolphinService {
 			String jsonData = response.body().string();
 			JSONObject jsonObject = new JSONObject(jsonData);
 			JSONObject data = jsonObject.getJSONObject("data");
-			
+
 			return new Gson().fromJson(data.toString(), Contact.class);
 		} catch (Exception e) {
 			log.debug("getCustomer() error: {}", e.getMessage(), e);

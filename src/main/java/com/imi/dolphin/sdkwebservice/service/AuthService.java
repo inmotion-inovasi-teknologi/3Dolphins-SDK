@@ -12,25 +12,15 @@
  **/
 package com.imi.dolphin.sdkwebservice.service;
 
-import com.imi.dolphin.sdkwebservice.model.Contact;
 import com.imi.dolphin.sdkwebservice.model.ExtensionRequest;
-import com.imi.dolphin.sdkwebservice.model.UserToken;
 
 /**
  * 
  * @author reja
  *
  */
-public interface IDolphinService {
-	public boolean isTokenExistAndNotExpired(UserToken userToken);
-	
-	public boolean isValidAuthToken(String token);
-	
-	public String getPingResponse(UserToken userToken);
-	
-	public UserToken getUserToken(UserToken userToken, ExtensionRequest extensionRequest);
-	
-	public Contact getCustomer(UserToken userToken, String contactId);
-	
-	public Contact updateCustomer(UserToken userToken, Contact contact);
+public interface AuthService {
+
+	public boolean isValidAuthToken(ExtensionRequest extensionRequest);
+
 }

@@ -40,6 +40,7 @@ import com.imi.dolphin.sdkwebservice.model.UserToken;
 import com.imi.dolphin.sdkwebservice.param.ParamSdk;
 import com.imi.dolphin.sdkwebservice.property.AppProperties;
 import com.imi.dolphin.sdkwebservice.util.OkHttpUtil;
+import com.imi.dolphin.sdkwebservice.util.SdkUtil;
 
 import okhttp3.Request;
 import okhttp3.Response;
@@ -66,24 +67,13 @@ public class ServiceImp implements IService {
 	IDolphinService svcDolphinService;
 
 	@Autowired
+	AuthService svcAuthService;
+	
+	@Autowired
 	OkHttpUtil okHttpUtil;
 	
-	/**
-	 * Get parameter value from request body parameter
-	 * 
-	 * @param extensionRequest
-	 * @param name
-	 * @return
-	 */
-	private String getEasyMapValueByName(ExtensionRequest extensionRequest, String name) {
-		log.debug("getEasyMapValueByName() extension request: {} name: {}", extensionRequest, name);
-		EasyMap easyMap = extensionRequest.getParameters().stream().filter(x -> x.getName().equals(name)).findAny()
-				.orElse(null);
-		if (easyMap != null) {
-			return easyMap.getValue();
-		}
-		return "";
-	}
+	@Autowired
+	SdkUtil sdkUtil;
 
 	/*
 	 * Sample Srn status with static result
@@ -124,8 +114,8 @@ public class ServiceImp implements IService {
 	@Override
 	public ExtensionResult getCustomerInfo(ExtensionRequest extensionRequest) {
 		log.debug("getCustomerInfo() extension request: {}", extensionRequest);
-		String account = getEasyMapValueByName(extensionRequest, "akun");
-		String name = getEasyMapValueByName(extensionRequest, "name");
+		String account = sdkUtil.getEasyMapValueByName(extensionRequest, "akun");
+		String name = sdkUtil.getEasyMapValueByName(extensionRequest, "name");
 		Map<String, String> output = new HashMap<>();
 		StringBuilder respBuilder = new StringBuilder();
 		if (account.substring(0, 1).equals("1")) {
@@ -171,7 +161,7 @@ public class ServiceImp implements IService {
 		extensionResult.setNext(true);
 
 		Map<String, String> clearEntities = new HashMap<>();
-		String name = getEasyMapValueByName(extensionRequest, "name");
+		String name = sdkUtil.getEasyMapValueByName(extensionRequest, "name");
 		if (name.equalsIgnoreCase("reja")) {
 			clearEntities.put("name", "budi");
 			extensionResult.setEntities(clearEntities);
@@ -191,8 +181,8 @@ public class ServiceImp implements IService {
 	@Override
 	public ExtensionResult getProductInfo(ExtensionRequest extensionRequest) {
 		log.debug("getProductInfo() extension request: {}", extensionRequest);
-		String model = getEasyMapValueByName(extensionRequest, "model");
-		String type = getEasyMapValueByName(extensionRequest, "type");
+		String model = sdkUtil.getEasyMapValueByName(extensionRequest, "model");
+		String type = sdkUtil.getEasyMapValueByName(extensionRequest, "type");
 
 		Map<String, String> output = new HashMap<>();
 		StringBuilder respBuilder = new StringBuilder();
@@ -511,7 +501,7 @@ public class ServiceImp implements IService {
 	@Override
 	public ExtensionResult doSendMail(ExtensionRequest extensionRequest) {
 		log.debug("doSendMail() extension request: {}", extensionRequest);
-		String recipient = getEasyMapValueByName(extensionRequest, "recipient");
+		String recipient = sdkUtil.getEasyMapValueByName(extensionRequest, "recipient");
 		MailModel mailModel = new MailModel(recipient, "3Dolphins SDK Mail Subject", "3Dolphins SDK mail content");
 		String sendMailResult = svcMailService.sendMail(mailModel);
 
@@ -531,7 +521,7 @@ public class ServiceImp implements IService {
 	 */
 	@Override
 	public ExtensionResult getDolphinResponse(ExtensionRequest extensionRequest) {
-		userToken = svcDolphinService.getUserToken(userToken);
+		userToken = svcDolphinService.getUserToken(userToken, extensionRequest);
 		log.debug("getDolphinResponse() extension request: {} user token: {}", extensionRequest, userToken);
 		String contactId =extensionRequest.getIntent().getTicket().getContactId();
 		Contact contact = svcDolphinService.getCustomer(userToken, contactId);
@@ -546,6 +536,33 @@ public class ServiceImp implements IService {
 		extensionResult.setSuccess(true);
 		extensionResult.setNext(true);
 		extensionResult.setValue(output);
+		return extensionResult;
+	}
+
+	/* 
+	 * SDK with Authorization example
+	 * 
+	 * (non-Javadoc)
+	 * @see com.imi.dolphin.sdkwebservice.service.IService#getPingResponse(com.imi.dolphin.sdkwebservice.model.ExtensionRequest)
+	 */
+	@Override
+	public ExtensionResult getPingResponse(ExtensionRequest extensionRequest) {
+		log.debug("getPingResponse() extension request: {}", extensionRequest);
+		Map<String, String> output = new HashMap<>();
+		ExtensionResult extensionResult = new ExtensionResult();
+		if (!svcAuthService.isValidAuthToken(extensionRequest)) {
+			extensionResult.setSuccess(false);
+		}else {
+			extensionResult.setSuccess(true);
+			userToken = svcDolphinService.getUserToken(userToken, extensionRequest);
+			log.debug("getPingResponse() extension request: {} user token: {}", extensionRequest, userToken);
+			String result = svcDolphinService.getPingResponse(userToken);
+			output.put(OUTPUT, result);
+			extensionResult.setValue(output);
+		}
+		extensionResult.setAgent(false);
+		extensionResult.setRepeat(false);
+		extensionResult.setNext(true);
 		return extensionResult;
 	}
 
