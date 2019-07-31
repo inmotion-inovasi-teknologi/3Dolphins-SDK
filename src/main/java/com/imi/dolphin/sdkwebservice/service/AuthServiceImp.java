@@ -57,7 +57,8 @@ public class AuthServiceImp implements AuthService {
 				return true;
 			}
 			Map<String, String> tokenMap = new HashMap<>();
-			tokenMap.put(ParamSdk.SDK_AUTHORIZATION, "Bearer " + botToken);
+			JSONObject jObject = new JSONObject(botToken);
+			tokenMap.put(ParamSdk.SDK_AUTHORIZATION, "Bearer " + jObject.getString(ParamSdk.CONSTANT_TOKEN));
 
 			okHttpUtil.init(true);
 			Request.Builder builder = okHttpUtil.getBuilder();
