@@ -57,7 +57,7 @@ public class AuthServiceImp implements AuthService {
 				return true;
 			}
 			Map<String, String> tokenMap = new HashMap<>();
-			tokenMap.put(ParamSdk.SDK_AUTHORIZATION, "Bearer " + extensionRequest.getIntent().getBotToken());
+			tokenMap.put(ParamSdk.SDK_AUTHORIZATION, "Bearer " + botToken);
 
 			okHttpUtil.init(true);
 			Request.Builder builder = okHttpUtil.getBuilder();
